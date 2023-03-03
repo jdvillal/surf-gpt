@@ -12,6 +12,11 @@ export class AppComponent {
   
   onInit(){
     new TabInstance({url:'https://www.google.com'})
+
+    window.ipcRenderer.on('url',(event: Event, data: string)=>{
+      console.log("on url");
+      console.log(data, event);
+    });
   }
 
   onChangeUrl(url_input_element: HTMLInputElement){

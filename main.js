@@ -1,4 +1,4 @@
-const { app, BrowserWindow, BrowserView, ipcMain } = require('electron')
+const { app, BrowserWindow, BrowserView, ipcMain, ipcRenderer } = require('electron')
 const url = require('url')
 const path = require('path')
 
@@ -20,11 +20,18 @@ function createWindow() {
   views.push(view);
   view.setBounds({ x: 0, y: 45, width: 885, height: 755 })
   //view.setAutoResize({ width: true, height: true })
-  view.webContents.loadURL('https://www.facebook.com')
-  view.webContents.addListener('did-finish-load', () => {
-    console.log('did-finish-load')
-    console.log(view.webContents.getURL())
-
+  view.webContents.loadURL('https://www.google.com')
+  /* view.webContents.addListener('did-finish-load', () => {
+    //console.log('did-finish-load')
+    console.log('dud finished load',view.webContents.getURL())
+    win.webContents.send('url', view.webContents.getURL())
+  })
+  view.webContents.on('new-window', (event, url) => {
+    console.log('new window',url);
+  }) */
+  view.webContents.on('will-navigate', (event, url) => {
+    console.log('will-navigate',url);
+    win.webContents.send('url',url);
   })
   win.setBrowserView(view)
   
